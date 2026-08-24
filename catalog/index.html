@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <meta name="theme-color" content="#ffffff">
+    <title>PSP 한패치</title>
+    <link rel="stylesheet" href="catalog/assets/catalog.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
+    <div class="page">
+      <header class="site-header">
+        <a class="brand" href="/">
+          <span class="pixel-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span><strong>PSP 한패치</strong><small>LOCAL PATCH LIBRARY</small></span>
+        </a>
+        <span class="service-version">WEB v0.2</span>
+      </header>
+
+      <main id="main-content">
+        <section class="hero" aria-labelledby="hero-title">
+          <span class="terminal-label">PATCH LIBRARY</span>
+          <h1 id="hero-title">드래그하고,<br><em>패치하고, 플레이.</em></h1>
+          <p>원본 게임은 서버에 보내지 않습니다. 원하는 패처를 선택하면 필요한 차이 데이터만 내려받아 브라우저 안에서 처리합니다.</p>
+          <div class="local-state"><span aria-hidden="true"></span><strong>LOCAL PROCESSING</strong> 원본 및 결과 파일 업로드 없음</div>
+        </section>
+
+        <section class="library" aria-labelledby="library-title">
+          <div class="section-heading">
+            <div><span class="terminal-label">AVAILABLE PATCHES</span><h2 id="library-title">패처 선택</h2></div>
+            <span id="patcher-count">불러오는 중</span>
+          </div>
+          <div id="patcher-list" class="patcher-list" aria-live="polite"></div>
+          <div id="empty-state" class="empty-state" hidden>
+            <strong>현재 공개된 패처가 없습니다.</strong>
+            <span>관리자가 패치 패키지를 등록하면 이곳에 표시됩니다.</span>
+          </div>
+        </section>
+
+        <section class="principles" aria-label="패처 동작 원칙">
+          <article><span><i></i>01</span><strong>원본 업로드 없음</strong><p>게임 파일은 브라우저가 사용자의 저장 장치에서만 읽습니다.</p></article>
+          <article><span><i></i>02</span><strong>SHA-256 검증</strong><p>지원 원본, 패치 데이터와 결과 파일을 단계별로 확인합니다.</p></article>
+          <article><span><i></i>03</span><strong>차이 데이터만 배포</strong><p>원본 게임이나 패치 완료 파일은 서버에 포함하지 않습니다.</p></article>
+        </section>
+      </main>
+
+      <footer><span>PSP WEB KOREAN PATCHER</span><a href="/admin/">관리자 페이지</a></footer>
+    </div>
+    <script src="catalog/assets/catalog.js" defer></script>
+  </body>
+</html>

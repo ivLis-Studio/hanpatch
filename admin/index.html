@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <meta name="theme-color" content="#ffffff">
+    <title>PSP 한패치 관리자</title>
+    <link rel="stylesheet" href="assets/admin.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
+    <header class="topbar">
+      <a class="brand" href="/">
+        <span class="pixel-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span><strong>PSP 한패치 ADMIN</strong><small>PATCH PACKAGE REGISTRY</small></span>
+      </a>
+      <button id="logout-button" class="ghost-button" type="button" hidden>로그아웃</button>
+    </header>
+
+    <main id="main-content">
+      <section id="login-panel" class="login-panel" aria-labelledby="login-title">
+        <p class="eyebrow">SECURE CONSOLE</p>
+        <h1 id="login-title">관리자 인증</h1>
+        <p>서버의 <code>ADMIN_TOKEN</code> 값을 입력하세요. 토큰은 이 탭이 닫히면 삭제됩니다.</p>
+        <form id="login-form">
+          <input type="text" name="username" autocomplete="username" value="admin" hidden>
+          <label for="token-input">관리자 토큰</label>
+          <div class="token-row">
+            <input id="token-input" type="password" autocomplete="current-password" required>
+            <button class="primary-button" type="submit">접속</button>
+          </div>
+        </form>
+        <div id="login-error" class="alert" role="alert" hidden></div>
+      </section>
+
+      <div id="dashboard" hidden>
+        <section class="dashboard-hero">
+          <div>
+            <p class="eyebrow">PATCH REGISTRY</p>
+            <h1>패처 관리</h1>
+            <p>호환 ZIP을 등록하면 게임별 패처 주소가 자동으로 만들어집니다.</p>
+          </div>
+          <button id="refresh-button" class="ghost-button" type="button">새로고침</button>
+        </section>
+
+        <section class="metrics" aria-label="패처 통계">
+          <article><span>전체</span><strong id="total-count">0</strong></article>
+          <article><span>공개 중</span><strong id="enabled-count">0</strong></article>
+          <article><span>비공개</span><strong id="disabled-count">0</strong></article>
+        </section>
+
+        <section class="upload-card" aria-labelledby="upload-title">
+          <div class="section-heading">
+            <div><p class="eyebrow">NEW PACKAGE</p><h2 id="upload-title">패치 ZIP 등록</h2></div>
+            <a href="/docs/PATCH_PACKAGE_KO.md" class="text-link" id="package-doc-link">ZIP 규격 보기</a>
+          </div>
+          <div id="upload-zone" class="upload-zone" role="button" tabindex="0" aria-describedby="upload-help">
+            <input id="package-input" type="file" accept=".zip,application/zip" hidden>
+            <span class="upload-symbol" aria-hidden="true">＋</span>
+            <strong>패치 패키지 ZIP을 끌어놓으세요</strong>
+            <span id="upload-help">또는 눌러서 파일을 선택하세요</span>
+          </div>
+          <div id="upload-progress" class="upload-progress" hidden>
+            <div><strong id="upload-name"></strong><span id="upload-percent">0%</span></div>
+            <div class="progress-track" role="progressbar" aria-label="ZIP 업로드 진행률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+              <span id="upload-bar"></span>
+            </div>
+            <p id="upload-status">서버로 전송하고 있습니다.</p>
+          </div>
+        </section>
+
+        <section class="registry-section" aria-labelledby="registry-title">
+          <div class="section-heading">
+            <div><p class="eyebrow">INSTALLED</p><h2 id="registry-title">등록된 패처</h2></div>
+          </div>
+          <div id="patcher-list" class="patcher-list"></div>
+          <div id="empty-state" class="empty-state" hidden>등록된 패처가 없습니다.</div>
+        </section>
+      </div>
+    </main>
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+    <script src="assets/admin.js" defer></script>
+  </body>
+</html>

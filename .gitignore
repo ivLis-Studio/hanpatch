@@ -1,0 +1,21 @@
+# Runtime patch packages and game-specific metadata are deployment data.
+patchers/*
+!patchers/.gitkeep
+packages/*
+!packages/.gitkeep
+
+# Local, project-specific import helper. It is intentionally not part of the
+# generic GitHub repository.
+scripts/sync-persona2t.mjs
+
+patchers/.registry.json
+patchers/.staging/
+patchers/.uploads/
+patchers/.trash/
+
+.env
+.DS_Store
+*.log
+node_modules/
+output/
+.playwright-cli/

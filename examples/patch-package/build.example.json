@@ -1,0 +1,11 @@
+{
+  "discId": "ULJM00000",
+  "entries": [
+    {
+      "path": "/PSP_GAME/USRDIR/example.bin",
+      "strategy": 0,
+      "sourceFiles": ["./original/example.bin"],
+      "targetFile": "./translated/example.bin"
+    }
+  ]
+}

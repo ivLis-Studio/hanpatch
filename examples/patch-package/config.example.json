@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "slug": "example-game",
+  "title": "예시 게임 한국어 패치",
+  "shortTitle": "예시 게임 패치",
+  "version": "1.0.0",
+  "engine": "psp-iso-delta-v2",
+  "description": "지원하는 원본 ISO를 브라우저 안에서 한국어판으로 패치합니다.",
+  "input": {
+    "label": "원본 일본어판 ISO",
+    "extensions": [".iso"],
+    "discId": "ULJM00000",
+    "supportedVariants": ["정품 UMD 추출판"]
+  },
+  "output": {
+    "suggestedName": "Example Game (Japan) [KO].iso"
+  },
+  "patch": {
+    "file": "example-game-v1.p2kp",
+    "size": 123456,
+    "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "notices": [
+    "원본과 결과 ISO는 서버로 전송되지 않습니다.",
+    "직접 소유한 정품에서 추출한 ISO만 사용하세요."
+  ],
+  "engineData": {
+    "format": "PSPDELTA",
+    "formatVersion": 2,
+    "discId": "ULJM00000",
+    "entries": [
+      {
+        "path": "/PSP_GAME/USRDIR/example.bin",
+        "strategy": 0,
+        "sourceSize": 1000,
+        "targetSize": 1000,
+        "sourceSha256Variants": [
+          "1111111111111111111111111111111111111111111111111111111111111111"
+        ],
+        "targetSha256": "2222222222222222222222222222222222222222222222222222222222222222"
+      }
+    ]
+  }
+}
