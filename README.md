@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/hanpatch-logo.png" alt="hanpatch — PSP Web Patcher" width="1086">
+</p>
+
 # PSP 웹 한글패쳐
 
 사용자가 직접 소유한 PSP 원본 ISO를 서버에 업로드하지 않고, 브라우저 안에서 패치하는 범용 Node.js 서비스입니다. 관리자는 선언형 패치 ZIP을 등록해 게임별 패처를 추가·교체·비공개·삭제할 수 있습니다.
