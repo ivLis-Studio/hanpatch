@@ -128,6 +128,12 @@ test("serves a generic patcher app and client-safe manifest", async () => {
     assert.equal(manifest.engineData.entries.length, 1);
     assert.equal(manifest.patch.url, "files/example-game-v1.p2kp");
     assert.equal("file" in manifest.patch, false);
+
+    for (const asset of ["dlc-patch-worker.js", "dlc-patch-core.js"]) {
+      const assetResponse = await fetch(`${base}/example-game/assets/${asset}`);
+      assert.equal(assetResponse.status, 200);
+      assert.match(assetResponse.headers.get("content-type"), /javascript/);
+    }
   }, { patchersDir: fixture.patchersDir });
 });
 

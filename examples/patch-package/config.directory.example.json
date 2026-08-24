@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "slug": "example-file-set",
+  "title": "예시 다중 파일 한국어 패치",
+  "shortTitle": "예시 파일 세트 패치",
+  "version": "1.0.0",
+  "engine": "psp-file-set-delta-v1",
+  "description": "사용자가 선택한 폴더의 여러 파일을 브라우저 안에서 한 번에 패치합니다.",
+  "input": {
+    "mode": "directory",
+    "label": "원본 파일 세트 폴더",
+    "extensions": [".bin", ".dat"],
+    "discId": "ULJM00000-DATA",
+    "supportedVariants": ["file01.bin + file02.dat"]
+  },
+  "output": { "suggestedName": "ULJM00000_DATA_KO" },
+  "patch": {
+    "file": "example-file-set-v1.p2fd",
+    "size": 123456,
+    "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "notices": [
+    "원본 폴더는 수정하지 않고 별도의 결과 폴더를 만듭니다.",
+    "원본과 결과 파일은 서버로 전송되지 않습니다."
+  ],
+  "engineData": {
+    "format": "P2KODLC1",
+    "formatVersion": 1,
+    "discId": "ULJM00000-DATA",
+    "entries": [
+      {
+        "name": "file01.bin",
+        "sourceSize": 1000,
+        "targetSize": 1200,
+        "sourceSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+        "targetSha256": "2222222222222222222222222222222222222222222222222222222222222222"
+      },
+      {
+        "name": "file02.dat",
+        "sourceSize": 2000,
+        "targetSize": 1800,
+        "sourceSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+        "targetSha256": "4444444444444444444444444444444444444444444444444444444444444444"
+      }
+    ]
+  }
+}

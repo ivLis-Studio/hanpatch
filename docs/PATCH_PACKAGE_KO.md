@@ -1,6 +1,6 @@
 # 패치 패키지 ZIP 규격 v1
 
-관리자 페이지가 받는 ZIP은 실행 코드가 아니라 `config.json`과 차이 데이터 하나로 구성된 선언형 패키지입니다.
+관리자 페이지가 받는 ZIP은 실행 코드가 아니라 `config.json`과 차이 데이터 하나로 구성된 선언형 패키지입니다. 단일 ISO와 폴더 안의 여러 독립 파일을 모두 지원합니다.
 
 ## ZIP 구조
 
@@ -14,7 +14,7 @@ files/
 
 ## 전체 예제
 
-실제 파일로 복사할 수 있는 예제는 [../examples/patch-package/config.example.json](../examples/patch-package/config.example.json)에 있습니다. 예제의 크기와 해시는 자리표시자이므로 생성된 메타데이터 값으로 바꿔야 합니다.
+ISO 예제는 [../examples/patch-package/config.example.json](../examples/patch-package/config.example.json), 다중 파일 예제는 [../examples/patch-package/config.directory.example.json](../examples/patch-package/config.directory.example.json)에 있습니다. 예제의 크기와 해시는 자리표시자이므로 생성된 메타데이터 값으로 바꿔야 합니다.
 
 ```json
 {
@@ -65,10 +65,10 @@ files/
 | `title` | 문자열 | 목록과 패처 화면에 표시, 최대 100자 |
 | `shortTitle` | 문자열 | 짧은 화면 제목, 최대 60자 |
 | `version` | 문자열 | 패치 버전, 최대 32자 |
-| `engine` | 문자열 | 권장값 `psp-iso-delta-v2` |
+| `engine` | 문자열 | ISO는 `psp-iso-delta-v2`, 다중 파일은 `psp-file-set-delta-v1` |
 | `description` | 문자열 | 패치 설명, 최대 500자 |
 | `input` | 객체 | 지원 원본 표시 및 검증 정보 |
-| `output` | 객체 | 결과 파일 이름 |
+| `output` | 객체 | 결과 ISO 이름 또는 결과 폴더 이름 |
 | `patch` | 객체 | P2KP 파일 이름·크기·해시 |
 | `notices` | 문자열 배열 | 사용자 안내, 1~32개 |
 | `engineData` | 객체 | P2KP 내부 메타데이터의 검증용 복제본 |
@@ -80,11 +80,14 @@ files/
 | 필드 | 설명 |
 |---|---|
 | `label` | 파일 선택 영역에 표시할 원본 이름 |
+| `mode` | 생략 또는 `"file"`이면 단일 ISO, `"directory"`이면 폴더의 다중 파일 |
 | `extensions` | 허용 확장자. 소문자 `.[a-z0-9]` 형식 |
 | `discId` | `/PSP_GAME/PARAM.SFO`에서 확인할 PSP 디스크 ID |
 | `supportedVariants` | 지원하는 UMD/PSN 추출판 등의 사용자 표시 이름 |
 
 `input.discId`와 `engineData.discId`는 같아야 합니다.
+
+`input.mode: "directory"`에서는 브라우저가 폴더 선택기를 열고 `engineData.entries[]`에 선언된 모든 파일을 이름·크기·SHA-256으로 검사합니다. 원본 폴더는 수정하지 않으며 `output.suggestedName`을 이름으로 한 새 결과 폴더를 만듭니다. 현재 하위 경로 없이 한 폴더 바로 아래의 파일만 지원합니다.
 
 ## `patch`
 
@@ -98,6 +101,8 @@ files/
 
 ## `engineData.entries[]`
 
+### ISO 엔진
+
 | 필드 | 설명 |
 |---|---|
 | `path` | ISO 안의 절대 경로. `..`, 역슬래시 금지 |
@@ -108,6 +113,20 @@ files/
 | `targetSha256` | 결과 내부 파일의 SHA-256 |
 
 항목은 1~32개이며 경로가 중복될 수 없습니다. `engineData`는 P2KP 헤더와 바이트 단위로 대응해야 하며, 브라우저가 적용 전에 두 정보를 대조합니다.
+
+### 다중 파일 엔진
+
+`engine`이 `psp-file-set-delta-v1`일 때 `engineData.format`은 `P2KODLC1`, `formatVersion`은 `1`이어야 합니다.
+
+| 필드 | 설명 |
+|---|---|
+| `name` | 선택한 폴더 바로 아래의 파일 이름. 하위 경로 금지 |
+| `sourceSize` | 원본 파일 크기 |
+| `targetSize` | 결과 파일 크기 |
+| `sourceSha256` | 원본 파일의 SHA-256 |
+| `targetSha256` | 결과 파일의 SHA-256 |
+
+항목은 1~32개이며 파일 이름이 중복될 수 없습니다. 선택한 폴더에 다른 파일이 있어도 결과 폴더에는 선언된 항목만 생성됩니다. 선택 사항인 `engineData.requiresMainPatch`에는 함께 사용해야 할 본편 패치 버전 안내를 넣을 수 있습니다. 바이너리 형식은 [FILE_SET_PATCH_FORMAT_KO.md](FILE_SET_PATCH_FORMAT_KO.md)를 참고하세요.
 
 ## 전략
 
@@ -141,7 +160,7 @@ npm run package:patcher -- \
 `/admin/`에서 ZIP을 등록한 다음 지원 원본으로 실제 패치를 완료하고 다음을 확인합니다.
 
 1. 잘못된 원본이 거부되는지
-2. 결과 ISO 전체 SHA-256 검증이 끝나는지
+2. 결과 ISO 또는 모든 결과 파일의 SHA-256 검증이 끝나는지
 3. 게임이 실제 기기 또는 에뮬레이터에서 실행되는지
 4. 같은 `slug` 교체와 공개·비공개 전환이 정상인지
 

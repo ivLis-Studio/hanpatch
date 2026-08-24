@@ -402,7 +402,14 @@ export async function createAppServer(options = {}) {
         return;
       }
       if (parts.length === 3 && parts[1] === "assets") {
-        const allowed = new Set(["app.css", "app.js", "patch-worker.js", "sha256.js"]);
+        const allowed = new Set([
+          "app.css",
+          "app.js",
+          "patch-worker.js",
+          "dlc-patch-worker.js",
+          "dlc-patch-core.js",
+          "sha256.js",
+        ]);
         if (!allowed.has(parts[2])) {
           sendJson(res, 404, { error: "asset_not_found" });
           return;

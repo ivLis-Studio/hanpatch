@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "node server.mjs",
-    "check": "node --check server.mjs && node --check lib/patcher-config.mjs && node --check lib/patcher-registry.mjs && node --check lib/zip-package.mjs && node --check scripts/build-patch-data.mjs && node --check scripts/package-patcher.mjs && node --check public/app.js && node --check public/sha256.js && node --check public/patch-worker.js && node --check admin/admin.js && node --check catalog/catalog.js",
+    "check": "node --check server.mjs && node --check lib/patcher-config.mjs && node --check lib/patcher-registry.mjs && node --check lib/zip-package.mjs && node --check scripts/build-patch-data.mjs && node --check scripts/package-patcher.mjs && node --check public/app.js && node --check public/sha256.js && node --check public/patch-worker.js && node --check public/dlc-patch-core.js && node --check public/dlc-patch-worker.js && node --check admin/admin.js && node --check catalog/catalog.js",
     "build:patch-data": "node scripts/build-patch-data.mjs",
     "package:patcher": "node scripts/package-patcher.mjs",
     "test": "node --test test/*.test.mjs"

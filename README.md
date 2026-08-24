@@ -4,11 +4,11 @@
 
 # PSP 웹 한글패쳐
 
-사용자가 직접 소유한 PSP 원본 ISO를 서버에 업로드하지 않고, 브라우저 안에서 패치하는 범용 Node.js 서비스입니다. 관리자는 선언형 패치 ZIP을 등록해 게임별 패처를 추가·교체·비공개·삭제할 수 있습니다.
+사용자가 직접 소유한 PSP 원본 ISO 또는 DLC 파일 세트를 서버에 업로드하지 않고, 브라우저 안에서 패치하는 범용 Node.js 서비스입니다. 관리자는 선언형 패치 ZIP을 등록해 게임별 패처를 추가·교체·비공개·삭제할 수 있습니다.
 
 ## 저장소에 포함되는 것
 
-- PSP ISO9660 검증 및 차이 데이터 적용 엔진
+- PSP ISO9660과 다중 파일 원본 검증 및 차이 데이터 적용 엔진
 - 공개 패치 목록, 개별 패처, 관리자 페이지
 - 패치 데이터 생성기와 패키지 ZIP 생성기
 - ZIP 경로 탈출·심볼릭 링크·압축 폭탄·해시 불일치 방어
@@ -28,7 +28,7 @@
 
 ```bash
 git clone <repository-url>
-cd psp-web-korean-patcher
+cd hanpatch
 ADMIN_TOKEN='충분히-긴-임의-토큰' HOST=127.0.0.1 PORT=3000 npm start
 ```
 
@@ -43,7 +43,7 @@ ADMIN_TOKEN='충분히-긴-임의-토큰' HOST=127.0.0.1 PORT=3000 npm start
 
 ### 1. 패치 대상 파일 준비
 
-지원 원본 ISO에서 추출한 파일과 번역·수정이 끝난 결과 파일을 로컬에 준비합니다. 이 파일들은 배포 패키지에 포함하지 않습니다.
+지원 원본 ISO에서 추출한 파일과 번역·수정이 끝난 결과 파일을 로컬에 준비합니다. DLC처럼 여러 파일을 함께 패치할 때는 원본 파일 세트와 결과 파일 세트를 준비합니다. 이 파일들은 배포 패키지에 포함하지 않습니다.
 
 ### 2. 차이 데이터 생성
 
@@ -60,7 +60,7 @@ npm run build:patch-data -- \
 
 ### 3. 패치 설정 작성
 
-[examples/patch-package/config.example.json](examples/patch-package/config.example.json)을 참고해 `config.json`을 작성합니다. 폴더 구조는 다음과 같습니다.
+[examples/patch-package/config.example.json](examples/patch-package/config.example.json)을 참고해 `config.json`을 작성합니다. 여러 개의 독립 파일을 한꺼번에 패치하려면 [config.directory.example.json](examples/patch-package/config.directory.example.json)의 `input.mode: "directory"` 예제를 사용합니다. 패키지 폴더 구조는 두 방식 모두 같습니다.
 
 ```text
 my-patch/
@@ -83,6 +83,7 @@ npm run package:patcher -- \
 
 - [패치 ZIP 규격](docs/PATCH_PACKAGE_KO.md)
 - [P2KP 차이 데이터 형식](docs/PATCH_DATA_FORMAT_KO.md)
+- [다중 파일 차이 데이터 형식](docs/FILE_SET_PATCH_FORMAT_KO.md)
 
 ## 지원 패치 전략
 
@@ -94,7 +95,7 @@ npm run package:patcher -- \
 
 일반적인 게임은 전략 `0`과 `1`만 사용합니다. 전략 `2`는 패키지당 최대 한 번만 허용됩니다.
 
-공개 엔진 이름은 `psp-iso-delta-v2`, 바이너리 매직은 `PSPDELTA`입니다. 엔진 구현에는 특정 게임의 문자열·오프셋·번역 데이터가 하드코딩되어 있지 않습니다. 기존 패키지는 레거시 식별자 `p2kofsp1-v2`와 매직 `P2KOFSP1` 조합으로만 읽기 호환을 유지합니다.
+ISO용 공개 엔진 이름은 `psp-iso-delta-v2`, 바이너리 매직은 `PSPDELTA`입니다. 여러 독립 파일을 폴더 단위로 패치하는 엔진은 `psp-file-set-delta-v1`, 바이너리 매직은 `P2KODLC1`입니다. 엔진 구현에는 특정 게임의 문자열·오프셋·번역 데이터가 하드코딩되어 있지 않습니다. 기존 패키지는 레거시 식별자 `p2kofsp1-v2`와 매직 `P2KOFSP1` 조합으로만 읽기 호환을 유지합니다.
 
 ## 관리자 기능
 
@@ -143,8 +144,8 @@ git ls-files patchers packages
 ## 배포 및 권리 경계
 
 - 사용자는 본인이 소유한 정품에서 직접 추출한 ISO를 사용해야 합니다.
-- 원본 ISO와 결과 ISO는 브라우저의 로컬 저장 장치에서만 읽고 씁니다.
-- 서버에는 원본 ISO 업로드 API가 없습니다.
+- 원본 ISO·DLC 파일 세트와 결과물은 브라우저의 로컬 저장 장치에서만 읽고 씁니다.
+- 서버에는 원본 ISO나 DLC 업로드 API가 없습니다.
 - 패치 ZIP에는 차이 데이터만 넣고 원본·완성 게임 파일이나 DLC를 넣지 마세요.
 - ZIP 안의 임의 JavaScript·실행 파일은 허용하지 않습니다.
 - 패치 제작자는 지원 원본, 결과 해시, 실제 기기 또는 에뮬레이터 실행을 별도로 검증해야 합니다.
